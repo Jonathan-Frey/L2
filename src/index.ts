@@ -1,3 +1,3 @@
-export function testing() {
-  console.log("testing my module");
-}
+import { GameEngine } from "./GameEngine";
+
+export default GameEngine;
