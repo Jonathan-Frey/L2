@@ -1,0 +1,25 @@
+{
+  "name": "jf-canvas-game-engine",
+  "version": "0.1.0",
+  "description": "Made in 2024 as a part of the course 1dv610 at Linnaeus University",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "scripts": {
+    "build": "tsup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jonathan-Frey/L2.git"
+  },
+  "keywords": [
+    "canvas"
+  ],
+  "author": "Jonathan Frey <jf223rf@student.lnu.se>",
+  "license": "MIT",
+  "homepage": "https://github.com/Jonathan-Frey/L2#readme",
+  "devDependencies": {
+    "tsup": "^8.2.4",
+    "typescript": "^5.6.2"
+  }
+}
