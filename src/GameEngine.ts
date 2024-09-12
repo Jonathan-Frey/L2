@@ -1,6 +1,6 @@
-import { GameObject } from "./GameObject";
+import GameObject from "./GameObject";
 
-export class GameEngine {
+export default class GameEngine {
   // The canvas element in which the game runs.
   #canvas: HTMLCanvasElement;
 

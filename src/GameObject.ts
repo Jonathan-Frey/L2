@@ -1,4 +1,4 @@
-export abstract class GameObject {
+export default abstract class GameObject {
   // called each frame by the GameEngine Object
   update(delta: number) {
     console.log("hello from game object");
