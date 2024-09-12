@@ -18,6 +18,10 @@ export default class GameEngine {
     this.#ctx = this.#canvas.getContext("2d") as CanvasRenderingContext2D;
   }
 
+  addGameObject(obj: GameObject) {
+    this.#gameObjects.push(obj);
+  }
+
   // begins the game loop.
   start() {
     requestAnimationFrame((t) => this.#firstFrame(t));
