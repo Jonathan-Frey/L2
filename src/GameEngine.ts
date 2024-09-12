@@ -33,7 +33,7 @@ export default class GameEngine {
   stop() {}
 
   #render(timeStamp: number) {
-    const delta = this.#lastFrameTime ? this.#lastFrameTime - timeStamp : 0;
+    const delta = this.#lastFrameTime ? timeStamp - this.#lastFrameTime : 0;
     this.#frame += 1;
     console.log("frame: ", this.#frame);
     console.log("delta: ", delta);
