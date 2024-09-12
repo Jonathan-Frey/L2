@@ -1,6 +1,7 @@
 export abstract class GameObject {
   // called each frame by the GameEngine Object
   update(delta: number) {
+    console.log("hello from game object");
     this.#process(delta);
     this.#render(delta);
   }
