@@ -42,7 +42,7 @@ export default class GameEngine {
     console.log("frame: ", this.#frame);
     console.log("delta: ", delta);
     this.#gameObjects.forEach((gameObject) => {
-      gameObject.update(delta);
+      gameObject.update(delta, this.#ctx);
     });
     this.#lastFrameTime = timeStamp;
     requestAnimationFrame((t) => this.#render(t));
