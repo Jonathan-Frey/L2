@@ -7,10 +7,16 @@ export default class GameEngine {
   // The 2d rendering contect of the canvas element in which the game runs.
   #ctx: CanvasRenderingContext2D;
 
-  //
+  // the time that the game started.
   #startTime: number | null = null;
+
+  // the time of the most recent frame.
   #lastFrameTime: number | null = null;
+
+  // the game objects that are part of the game.
   #gameObjects: GameObject[] = [];
+
+  // the frame counter.
   #frame: number = 0;
 
   constructor(canvas: HTMLCanvasElement) {
@@ -24,7 +30,7 @@ export default class GameEngine {
 
   // begins the game loop.
   start() {
-    requestAnimationFrame((t) => this.#firstFrame(t));
+    window.requestAnimationFrame((t) => this.#firstFrame(t));
   }
 
   #firstFrame(timeStamp: number) {
@@ -37,15 +43,26 @@ export default class GameEngine {
   stop() {}
 
   #render(timeStamp: number) {
+    // clear the canvas
     this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
+
+    // calculate the delta time
     const delta = this.#lastFrameTime ? timeStamp - this.#lastFrameTime : 0;
+
+    // increment the frame counter
     this.#frame += 1;
     console.log("frame: ", this.#frame);
     console.log("delta: ", delta);
+
+    // update and render all game objects
     this.#gameObjects.forEach((gameObject) => {
       gameObject.update(delta, this.#ctx);
     });
+
+    // update the last frame time
     this.#lastFrameTime = timeStamp;
-    requestAnimationFrame((t) => this.#render(t));
+
+    // request the next frame
+    window.requestAnimationFrame((t) => this.#render(t));
   }
 }
