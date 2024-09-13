@@ -37,6 +37,7 @@ export default class GameEngine {
   stop() {}
 
   #render(timeStamp: number) {
+    this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
     const delta = this.#lastFrameTime ? timeStamp - this.#lastFrameTime : 0;
     this.#frame += 1;
     console.log("frame: ", this.#frame);
