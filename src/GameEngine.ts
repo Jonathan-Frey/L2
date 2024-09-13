@@ -42,6 +42,7 @@ export default class GameEngine {
   // TODO: implement stopping the game, breaking the render loop and stop requesting frames.
   stop() {}
 
+  // the main rendering ang logic loop of the game.
   #render(timeStamp: number) {
     // clear the canvas
     this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
@@ -51,8 +52,6 @@ export default class GameEngine {
 
     // increment the frame counter
     this.#frame += 1;
-    console.log("frame: ", this.#frame);
-    console.log("delta: ", delta);
 
     // update and render all game objects
     this.#gameObjects.forEach((gameObject) => {
