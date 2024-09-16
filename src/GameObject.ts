@@ -21,12 +21,12 @@ export default class GameObject extends EventTarget {
     this.parent = parent;
   }
 
-  addChild(child: GameObject) {
+  protected addChild(child: GameObject) {
     child.setParent(this);
     this.children.push(child);
   }
 
-  removeChild(child: GameObject) {
+  protected removeChild(child: GameObject) {
     this.children.filter((c) => c !== child);
   }
 
