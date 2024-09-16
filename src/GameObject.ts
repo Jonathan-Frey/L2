@@ -1,6 +1,6 @@
 import SceneNavigationEvent from "./SceneNavigationEvent";
 
-export default class GameObject extends EventTarget {
+export default abstract class GameObject extends EventTarget {
   protected parent: GameObject | null = null;
   protected children: GameObject[] = [];
 
