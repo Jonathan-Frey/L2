@@ -8,6 +8,9 @@ export default class GameEngine {
   // The 2d rendering contect of the canvas element in which the game runs.
   #ctx: CanvasRenderingContext2D;
 
+  // if the game is in debug mode. shows fps counter and other debug info.
+  #debug: boolean;
+
   // the time that the game started.
   #startTime: number | null = null;
 
@@ -20,10 +23,19 @@ export default class GameEngine {
   // the frame counter.
   #frame: number = 0;
 
-  constructor(canvas: HTMLCanvasElement, scene: GameObject) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    scene: GameObject,
+    options?: { debug?: boolean }
+  ) {
     this.#canvas = canvas;
     this.#ctx = this.#canvas.getContext("2d") as CanvasRenderingContext2D;
     this.setScene(scene);
+    if (options?.debug) {
+      this.#debug = options.debug;
+    } else {
+      this.#debug = false;
+    }
   }
 
   setScene(scene: GameObject) {
@@ -62,6 +74,10 @@ export default class GameEngine {
 
     // update and render the active scene
     this.#scene.update(delta, this.#ctx);
+
+    if (this.#debug) {
+      this.#ctx.fillText(`FPS: ${Math.round(1000 / delta)}`, 10, 10);
+    }
 
     // update the last frame time
     this.#lastFrameTime = timeStamp;

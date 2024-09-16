@@ -1,12 +1,12 @@
 import SceneNavigationEvent from "./SceneNavigationEvent";
 
 export default class GameObject extends EventTarget {
-  #parent: GameObject | null = null;
-  #children: GameObject[] = [];
+  protected parent: GameObject | null = null;
+  protected children: GameObject[] = [];
 
   // called each frame by the GameEngine Object
   update(delta: number, ctx: CanvasRenderingContext2D) {
-    this.#children.forEach((child) => {
+    this.children.forEach((child) => {
       child.update(delta, ctx);
     });
     this.process(delta);
@@ -14,20 +14,20 @@ export default class GameObject extends EventTarget {
   }
 
   protected getParent() {
-    return this.#parent;
+    return this.parent;
   }
 
   protected setParent(parent: GameObject) {
-    this.#parent = parent;
+    this.parent = parent;
   }
 
-  protected addChild(child: GameObject) {
+  addChild(child: GameObject) {
     child.setParent(this);
-    this.#children.push(child);
+    this.children.push(child);
   }
 
-  protected removeChild(child: GameObject) {
-    this.#children.filter((c) => c !== child);
+  removeChild(child: GameObject) {
+    this.children.filter((c) => c !== child);
   }
 
   protected navigateTo(scene: GameObject) {
