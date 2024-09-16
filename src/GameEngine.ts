@@ -1,4 +1,5 @@
 import GameObject from "./GameObject";
+import SceneNavigationEvent from "./SceneNavigationEvent";
 
 export default class GameEngine {
   // The canvas element in which the game runs.
@@ -14,18 +15,24 @@ export default class GameEngine {
   #lastFrameTime: number | null = null;
 
   // the game objects that are part of the game.
-  #gameObjects: GameObject[] = [];
+  #scene!: GameObject;
 
   // the frame counter.
   #frame: number = 0;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, scene: GameObject) {
     this.#canvas = canvas;
     this.#ctx = this.#canvas.getContext("2d") as CanvasRenderingContext2D;
+    this.setScene(scene);
   }
 
-  addGameObject(obj: GameObject) {
-    this.#gameObjects.push(obj);
+  setScene(scene: GameObject) {
+    this.#scene = scene;
+    this.#scene.addEventListener("sceneNavigation", (e) => {
+      const event = e as SceneNavigationEvent;
+      console.log(event.detail.scene);
+      this.setScene(event.detail.scene);
+    });
   }
 
   // begins the game loop.
@@ -53,10 +60,8 @@ export default class GameEngine {
     // increment the frame counter
     this.#frame += 1;
 
-    // update and render all game objects
-    this.#gameObjects.forEach((gameObject) => {
-      gameObject.update(delta, this.#ctx);
-    });
+    // update and render the active scene
+    this.#scene.update(delta, this.#ctx);
 
     // update the last frame time
     this.#lastFrameTime = timeStamp;

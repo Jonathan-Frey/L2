@@ -1,10 +1,11 @@
-export default abstract class GameObject extends EventTarget {
+import SceneNavigationEvent from "./SceneNavigationEvent";
+
+export default class GameObject extends EventTarget {
   #parent: GameObject | null = null;
   #children: GameObject[] = [];
 
   // called each frame by the GameEngine Object
-  update(delta: number, ctx: CanvasRenderingContext2D
-  ) {
+  update(delta: number, ctx: CanvasRenderingContext2D) {
     this.#children.forEach((child) => {
       child.update(delta, ctx);
     });
@@ -26,7 +27,11 @@ export default abstract class GameObject extends EventTarget {
   }
 
   protected removeChild(child: GameObject) {
-      this.#children.filter((c) => c !== child);
+    this.#children.filter((c) => c !== child);
+  }
+
+  protected navigateTo(scene: GameObject) {
+    this.dispatchEvent(new SceneNavigationEvent({ detail: { scene: scene } }));
   }
 
   // For behavior and interaction.
