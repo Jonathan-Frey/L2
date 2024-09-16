@@ -66,7 +66,9 @@ export default class GameEngine {
       gameObject.update(delta, this.#ctx);
     });
 
-    this.#ctx.fillText(`FPS: ${Math.round(1000 / delta)}`, 10, 10);
+    if (this.#debug) {
+      this.#ctx.fillText(`FPS: ${Math.round(1000 / delta)}`, 10, 10);
+    }
 
     // update the last frame time
     this.#lastFrameTime = timeStamp;
