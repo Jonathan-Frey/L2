@@ -95,6 +95,8 @@ export default class GameEngine {
     // restore the canvas context
     this.#ctx.restore();
 
+    // TODO: implement game objects unaffected by camera(UI, HUD, etc.)
+
     // render the frame counter if in debug mode
     if (this.#debug) {
       this.#ctx.fillText(`FPS: ${Math.round(1000 / delta)}`, 10, 10);
