@@ -38,7 +38,7 @@ export default class GameEngine {
     }
   }
 
-  setScene(scene: GameObject) {
+  private setScene(scene: GameObject) {
     this.#scene = scene;
     this.#scene.addEventListener("sceneNavigation", (e) => {
       const event = e as SceneNavigationEvent;
@@ -52,6 +52,7 @@ export default class GameEngine {
     window.requestAnimationFrame((t) => this.#firstFrame(t));
   }
 
+  // the first frame of the game loop.
   #firstFrame(timeStamp: number) {
     this.#startTime = timeStamp;
     this.#lastFrameTime = timeStamp;
@@ -73,8 +74,10 @@ export default class GameEngine {
     this.#frame += 1;
 
     // update and render the active scene
-    this.#scene.update(delta, this.#ctx);
+    this.#scene.process(delta);
+    this.#scene.render(delta, this.#ctx);
 
+    // render the frame counter if in debug mode
     if (this.#debug) {
       this.#ctx.fillText(`FPS: ${Math.round(1000 / delta)}`, 10, 10);
     }
