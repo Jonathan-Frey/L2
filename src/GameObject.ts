@@ -1,24 +1,45 @@
 import SceneNavigationEvent from "./SceneNavigationEvent";
+import Vector2D from "./Vector2D";
 
 export default abstract class GameObject extends EventTarget {
-  protected parent: GameObject | null = null;
-  protected children: GameObject[] = [];
+  #parent: GameObject | null | undefined = null;
+  #children: GameObject[] = [];
+  #position: Vector2D = new Vector2D(0, 0);
 
   protected getParent() {
-    return this.parent;
+    return this.#parent;
   }
 
-  protected setParent(parent: GameObject) {
-    this.parent = parent;
+  private setParent(parent: GameObject) {
+    this.#parent = parent;
   }
 
-  addChild(child: GameObject) {
+  protected addChild(child: GameObject) {
     child.setParent(this);
-    this.children.push(child);
+    this.#children.push(child);
   }
 
-  removeChild(child: GameObject) {
-    this.children.filter((c) => c !== child);
+  protected removeChild(child: GameObject) {
+    this.#children.filter((c) => c !== child);
+  }
+
+  protected get position() {
+    return this.#position;
+  }
+
+  protected set position(position: Vector2D) {
+    const deltaX = position.x - this.#position.x;
+    const deltaY = position.y - this.#position.y;
+
+    this.#position = position;
+
+    this.#children.forEach((child) => {
+      const childPosition = child.position;
+      child.position = new Vector2D(
+        childPosition.x + deltaX,
+        childPosition.y + deltaY
+      );
+    });
   }
 
   protected navigateTo(scene: GameObject) {
@@ -27,15 +48,14 @@ export default abstract class GameObject extends EventTarget {
 
   // For behavior and interaction.
   process(delta: number) {
-    this.children.forEach((child) => {
+    this.#children.forEach((child) => {
       child.process(delta);
     });
-    this.process(delta);
   }
 
   // For rendering the object to the screen.
   render(delta: number, ctx: CanvasRenderingContext2D) {
-    this.children.forEach((child) => {
+    this.#children.forEach((child) => {
       child.render(delta, ctx);
     });
   }

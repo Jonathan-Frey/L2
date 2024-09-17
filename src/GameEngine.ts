@@ -62,7 +62,7 @@ export default class GameEngine {
   // TODO: implement stopping the game, breaking the render loop and stop requesting frames.
   stop() {}
 
-  // the main rendering ang logic loop of the game.
+  // the main rendering and logic loop of the game.
   #render(timeStamp: number) {
     // clear the canvas
     this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
@@ -87,5 +87,9 @@ export default class GameEngine {
 
     // request the next frame
     window.requestAnimationFrame((t) => this.#render(t));
+  }
+
+  getScreenSize() {
+    return { width: this.#canvas.width, height: this.#canvas.height };
   }
 }
