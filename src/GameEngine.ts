@@ -1,5 +1,8 @@
 import GameObject from "./GameObject";
 import SceneNavigationEvent from "./SceneNavigationEvent";
+import Camera2D from "./Camera2D";
+import Vector2D from "./Vector2D";
+import CameraContext from "./CameraContext";
 
 export default class GameEngine {
   // The canvas element in which the game runs.
@@ -20,6 +23,8 @@ export default class GameEngine {
   // the game objects that are part of the game.
   #scene!: GameObject;
 
+  #camera: Camera2D;
+
   // the frame counter.
   #frame: number = 0;
 
@@ -31,6 +36,12 @@ export default class GameEngine {
     this.#canvas = canvas;
     this.#ctx = this.#canvas.getContext("2d") as CanvasRenderingContext2D;
     this.setScene(scene);
+    this.#camera = new Camera2D(
+      new Vector2D(0, 0),
+      canvas.width,
+      canvas.height
+    );
+    CameraContext.getInstance().setCamera(this.#camera);
     if (options?.debug) {
       this.#debug = options.debug;
     } else {
@@ -73,9 +84,16 @@ export default class GameEngine {
     // increment the frame counter
     this.#frame += 1;
 
+    // Apply camera transformation
+    this.#ctx.save();
+    this.#ctx.translate(-this.#camera.position.x, -this.#camera.position.y);
+
     // update and render the active scene
     this.#scene.process(delta);
-    this.#scene.render(delta, this.#ctx);
+    this.#scene.render(this.#ctx);
+
+    // restore the canvas context
+    this.#ctx.restore();
 
     // render the frame counter if in debug mode
     if (this.#debug) {
@@ -87,9 +105,5 @@ export default class GameEngine {
 
     // request the next frame
     window.requestAnimationFrame((t) => this.#render(t));
-  }
-
-  getScreenSize() {
-    return { width: this.#canvas.width, height: this.#canvas.height };
   }
 }

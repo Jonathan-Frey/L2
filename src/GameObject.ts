@@ -6,6 +6,13 @@ export default abstract class GameObject extends EventTarget {
   #children: GameObject[] = [];
   #position: Vector2D = new Vector2D(0, 0);
 
+  constructor(position?: Vector2D) {
+    super();
+    if (position) {
+      this.#position = position;
+    }
+  }
+
   protected getParent() {
     return this.#parent;
   }
@@ -54,9 +61,9 @@ export default abstract class GameObject extends EventTarget {
   }
 
   // For rendering the object to the screen.
-  render(delta: number, ctx: CanvasRenderingContext2D) {
+  render(ctx: CanvasRenderingContext2D) {
     this.#children.forEach((child) => {
-      child.render(delta, ctx);
+      child.render(ctx);
     });
   }
 }
