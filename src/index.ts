@@ -6,6 +6,8 @@ import SceneNavigationEvent from "./SceneNavigationEvent";
 import Rectangle from "./shapes/Rectangle";
 import Camera2D from "./Camera2D";
 import CameraContext from "./CameraContext";
+import UiCard from "./UiCard";
+import BorderOptions from "./BorderOptions";
 
 export default GameEngine;
 export {
@@ -16,4 +18,6 @@ export {
   Rectangle,
   Camera2D,
   CameraContext,
+  UiCard,
+  BorderOptions,
 };

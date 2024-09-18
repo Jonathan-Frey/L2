@@ -88,9 +88,9 @@ export default class GameEngine {
     this.#ctx.save();
     this.#ctx.translate(-this.#camera.position.x, -this.#camera.position.y);
 
-    // update and render the active scene
-    this.#scene.process(delta);
-    this.#scene.render(this.#ctx);
+    // update and draw the active scene
+    this.#scene.update(delta);
+    this.#scene.draw(this.#ctx);
 
     // restore the canvas context
     this.#ctx.restore();

@@ -17,7 +17,7 @@ export default class Rectangle extends GameObject {
     this.#color = color;
   }
 
-  render(ctx: CanvasRenderingContext2D) {
+  override render(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = this.#color;
     ctx.fillRect(this.position.x, this.position.y, this.#width, this.#height);
   }

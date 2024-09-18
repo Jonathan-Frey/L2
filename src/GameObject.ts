@@ -13,7 +13,7 @@ export default abstract class GameObject extends EventTarget {
     }
   }
 
-  protected getParent() {
+  getParent() {
     return this.#parent;
   }
 
@@ -21,20 +21,20 @@ export default abstract class GameObject extends EventTarget {
     this.#parent = parent;
   }
 
-  protected addChild(child: GameObject) {
+  addChild(child: GameObject) {
     child.setParent(this);
     this.#children.push(child);
   }
 
-  protected removeChild(child: GameObject) {
+  removeChild(child: GameObject) {
     this.#children.filter((c) => c !== child);
   }
 
-  protected get position() {
+  get position() {
     return this.#position;
   }
 
-  protected set position(position: Vector2D) {
+  set position(position: Vector2D) {
     const deltaX = position.x - this.#position.x;
     const deltaY = position.y - this.#position.y;
 
@@ -49,21 +49,27 @@ export default abstract class GameObject extends EventTarget {
     });
   }
 
-  protected navigateTo(scene: GameObject) {
+  navigateTo(scene: GameObject) {
     this.dispatchEvent(new SceneNavigationEvent({ detail: { scene: scene } }));
   }
 
   // For behavior and interaction.
-  process(delta: number) {
+  update(delta: number) {
+    this.process(delta);
     this.#children.forEach((child) => {
-      child.process(delta);
+      child.update(delta);
+    });
+  }
+
+  process(delta: number) {}
+
+  draw(ctx: CanvasRenderingContext2D) {
+    this.render(ctx);
+    this.#children.forEach((child) => {
+      child.draw(ctx);
     });
   }
 
   // For rendering the object to the screen.
-  render(ctx: CanvasRenderingContext2D) {
-    this.#children.forEach((child) => {
-      child.render(ctx);
-    });
-  }
+  render(ctx: CanvasRenderingContext2D) {}
 }
