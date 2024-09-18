@@ -1,3 +1,6 @@
+/**
+ * Options for how a border sohuld be rendered.
+ */
 export default class BorderOptions {
   #color: string | CanvasGradient | CanvasPattern;
   #width: number;
@@ -13,14 +16,26 @@ export default class BorderOptions {
     this.#radius = radius;
   }
 
+  /**
+   * Gets the color of the border.
+   * @returns the color of the border.
+   */
   get color() {
     return this.#color;
   }
 
+  /**
+   * Gets the width of the border.
+   * @returns the width of the border.
+   */
   get width() {
     return this.#width;
   }
 
+  /**
+   * Gets the radius of the border.
+   * @returns the radius of the border.
+   */
   get radius() {
     return this.#radius;
   }

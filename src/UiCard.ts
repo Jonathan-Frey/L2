@@ -2,6 +2,10 @@ import BorderOptions from "./BorderOptions";
 import FixedGameObject from "./FixedGameObject";
 import Vector2D from "./Vector2D";
 
+/**
+ * A UI card game object. Can have borders and rounded corners.
+ * @extends FixedGameObject
+ */
 export default class UiCard extends FixedGameObject {
   #width: number;
   #height: number;

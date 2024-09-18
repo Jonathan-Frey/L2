@@ -4,6 +4,11 @@ import Camera2D from "./Camera2D";
 import Vector2D from "./Vector2D";
 import CameraContext from "./CameraContext";
 
+/**
+ * The main game engine class.
+ * Handles logic and rendering of the game. keeps track of the game objects and the camera.
+ * @class
+ */
 export default class GameEngine {
   // The canvas element in which the game runs.
   #canvas: HTMLCanvasElement;
@@ -23,6 +28,7 @@ export default class GameEngine {
   // the game objects that are part of the game.
   #scene!: GameObject;
 
+  // the camera that is used to translate from world space to screen space.
   #camera: Camera2D;
 
   // the frame counter.
@@ -49,6 +55,10 @@ export default class GameEngine {
     }
   }
 
+  /**
+   * Sets the scene to be the active scene.
+   * @param scene the scene to set as the active scene.
+   */
   private setScene(scene: GameObject) {
     this.#scene = scene;
     this.#scene.addEventListener("sceneNavigation", (e) => {
@@ -58,12 +68,17 @@ export default class GameEngine {
     });
   }
 
-  // begins the game loop.
+  /**
+   * Starts the game loop.
+   */
   start() {
     window.requestAnimationFrame((t) => this.#firstFrame(t));
   }
 
-  // the first frame of the game loop.
+  /**
+   * The first frame of the game loop.
+   * @param timeStamp the time that the first frame started.
+   */
   #firstFrame(timeStamp: number) {
     this.#startTime = timeStamp;
     this.#lastFrameTime = timeStamp;
@@ -73,7 +88,10 @@ export default class GameEngine {
   // TODO: implement stopping the game, breaking the render loop and stop requesting frames.
   stop() {}
 
-  // the main rendering and logic loop of the game.
+  /**
+   * The main render loop of the game.
+   * @param timeStamp the time that the current frame started.
+   */
   #render(timeStamp: number) {
     // clear the canvas
     this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
