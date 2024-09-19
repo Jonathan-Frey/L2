@@ -16,12 +16,12 @@ export default abstract class GameObject extends EventTarget {
   #parent: GameObject | null | undefined = null;
   #children: GameObject[] = [];
   #position: Vector2D = new Vector2D(0, 0);
+  #fixed: boolean;
 
-  constructor(position?: Vector2D) {
+  constructor(fixed: boolean = false, position: Vector2D = new Vector2D(0, 0)) {
     super();
-    if (position) {
-      this.#position = position;
-    }
+    this.#position = position;
+    this.#fixed = fixed;
   }
 
   /**
@@ -58,10 +58,18 @@ export default abstract class GameObject extends EventTarget {
   }
 
   /**
+   * Gets the position of the GameObject.
    * @returns the position of the GameObject.
    */
   get position() {
     return this.#position;
+  }
+  /**
+   * Gets the global position of the GameObject.
+   * @returns the global position of the GameObject.
+   */
+  get globalPosition(): Vector2D {
+    return this.#parent?.globalPosition.add(this.#position) ?? this.#position;
   }
 
   /**
@@ -73,14 +81,6 @@ export default abstract class GameObject extends EventTarget {
     const deltaY = position.y - this.#position.y;
 
     this.#position = position;
-
-    this.#children.forEach((child) => {
-      const childPosition = child.position;
-      child.position = new Vector2D(
-        childPosition.x + deltaX,
-        childPosition.y + deltaY
-      );
-    });
   }
 
   /**
@@ -116,10 +116,17 @@ export default abstract class GameObject extends EventTarget {
    * @returns void
    */
   draw(ctx: CanvasRenderingContext2D) {
+    if (this.#fixed) {
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+    }
     this.render(ctx);
     this.#children.forEach((child) => {
       child.draw(ctx);
     });
+    if (this.#fixed) {
+      ctx.restore();
+    }
   }
 
   /**

@@ -13,9 +13,10 @@ export default class Rectangle extends GameObject {
     width: number,
     height: number,
     color: string | CanvasGradient | CanvasPattern,
+    fixed: boolean = false,
     position?: Vector2D
   ) {
-    super(position);
+    super(fixed, position);
     this.#width = width;
     this.#height = height;
     this.#color = color;
@@ -23,6 +24,11 @@ export default class Rectangle extends GameObject {
 
   override render(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = this.#color;
-    ctx.fillRect(this.position.x, this.position.y, this.#width, this.#height);
+    ctx.fillRect(
+      this.globalPosition.x,
+      this.globalPosition.y,
+      this.#width,
+      this.#height
+    );
   }
 }
