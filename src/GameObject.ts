@@ -1,3 +1,4 @@
+import Hitbox from "./Hitbox";
 import SceneNavigationEvent from "./SceneNavigationEvent";
 import Vector2D from "./Vector2D";
 
@@ -17,11 +18,20 @@ export default abstract class GameObject extends EventTarget {
   #children: GameObject[] = [];
   #position: Vector2D = new Vector2D(0, 0);
   #fixed: boolean;
+  #hitbox: Hitbox | null = null;
 
   constructor(fixed: boolean = false, position: Vector2D = new Vector2D(0, 0)) {
     super();
     this.#position = position;
     this.#fixed = fixed;
+  }
+
+  setHitbox(hitbox: Hitbox) {
+    this.#hitbox = hitbox;
+  }
+
+  getHitbox() {
+    return this.#hitbox;
   }
 
   /**
@@ -55,6 +65,14 @@ export default abstract class GameObject extends EventTarget {
    */
   removeChild(child: GameObject) {
     this.#children.filter((c) => c !== child);
+  }
+
+  getAllChildren(): GameObject[] {
+    const allChildren = [...this.#children];
+    this.#children.forEach((child) => {
+      allChildren.push(...child.getAllChildren());
+    });
+    return allChildren;
   }
 
   /**

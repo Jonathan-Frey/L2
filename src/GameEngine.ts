@@ -113,10 +113,9 @@ export default class GameEngine {
     // restore the canvas context
     this.#ctx.restore();
 
-    // TODO: implement game objects unaffected by camera(UI, HUD, etc.)
-
     // render the frame counter if in debug mode
     if (this.#debug) {
+      this.#ctx.fillStyle = "black";
       this.#ctx.fillText(`FPS: ${Math.round(1000 / delta)}`, 10, 10);
     }
 
@@ -125,5 +124,25 @@ export default class GameEngine {
 
     // request the next frame
     window.requestAnimationFrame((t) => this.#render(t));
+  }
+
+  /**
+   * Checks for collisions between all game objects.
+   */
+  checkCollisions() {
+    const objects = this.#scene.getAllChildren(); // Assuming getAllChildren returns all game objects in the scene
+    for (let i = 0; i < objects.length; i++) {
+      for (let j = i + 1; j < objects.length; j++) {
+        const objA = objects[i];
+        const objB = objects[j];
+        if (
+          objA.getHitbox() &&
+          objB.getHitbox() &&
+          objA.getHitbox()!.intersects(objB.getHitbox()!)
+        ) {
+          this.handleCollision(objA, objB);
+        }
+      }
+    }
   }
 }
