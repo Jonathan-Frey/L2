@@ -102,15 +102,14 @@ export default class GameEngine {
     // increment the frame counter
     this.#frame += 1;
 
-    // Apply camera transformation
-    this.#ctx.save();
-    this.#ctx.translate(-this.#camera.position.x, -this.#camera.position.y);
-
     // update the active scene
     this.#scene.update(delta);
     // check for collisions
     this.checkCollisions();
 
+    // Apply camera transformation
+    this.#ctx.save();
+    this.#ctx.translate(-this.#camera.position.x, -this.#camera.position.y);
     // draw the active scene
     this.#scene.draw(this.#ctx);
 
