@@ -1,9 +1,9 @@
-import Vector2D from "./Vector2D";
+import { Vector2D } from "./Vector2D";
 
 /**
  * A 2D camera that can be used to move around a 2D game world.
  */
-export default class Camera2D {
+export class Camera2D {
   #position: Vector2D;
   width: number;
   height: number;

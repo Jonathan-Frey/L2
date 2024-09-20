@@ -1,4 +1,4 @@
-import GameObject from "./GameObject";
+import { GameObject } from "./GameObject";
 
 /**
  * The detail interface for the SceneNavigationEvent.
@@ -17,7 +17,7 @@ interface SceneNavigationEventInit<T> extends EventInit {
 /**
  * An event that is dispatched when a scene navigation occurs.
  */
-export default class SceneNavigationEvent extends Event {
+export class SceneNavigationEvent extends Event {
   readonly detail: SceneNavigationDetail;
 
   constructor(EventInitDict: SceneNavigationEventInit<SceneNavigationDetail>) {

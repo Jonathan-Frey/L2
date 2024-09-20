@@ -1,7 +1,7 @@
 /**
  * Options for how a border sohuld be rendered.
  */
-export default class BorderOptions {
+export class BorderOptions {
   #color: string | CanvasGradient | CanvasPattern;
   #width: number;
   #radius: number;

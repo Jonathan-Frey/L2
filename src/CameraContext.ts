@@ -1,11 +1,11 @@
-import Camera2D from "./Camera2D";
+import { Camera2D } from "./Camera2D";
 
 /**
  * A singleton class that holds the current camera.
  *
  * This is used to allow game objects to access the camera without needing to pass it around.
  */
-export default class CameraContext {
+export class CameraContext {
   private static instance: CameraContext;
   private camera: Camera2D | null = null;
 

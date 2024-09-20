@@ -1,6 +1,5 @@
-import Hitbox from "./Hitbox";
-import SceneNavigationEvent from "./SceneNavigationEvent";
-import Vector2D from "./Vector2D";
+import { SceneNavigationEvent } from "./SceneNavigationEvent";
+import { Vector2D } from "./Vector2D";
 
 /**
  * GameObject is the base class for all objects in the game.
@@ -13,36 +12,14 @@ import Vector2D from "./Vector2D";
  * When a GameObject is added as a child to another GameObject, its position will be updated when the parent GameObjects position is updated.
  * @extends EventTarget
  */
-export default abstract class GameObject extends EventTarget {
+export abstract class GameObject extends EventTarget {
   #parent: GameObject | null | undefined = null;
   #children: GameObject[] = [];
-  #position: Vector2D = new Vector2D(0, 0);
-  #fixed: boolean;
-  #hitbox: Hitbox | null = null;
-  #isStatic: boolean;
+  #position: Vector2D;
 
-  constructor(
-    fixed: boolean = false,
-    position: Vector2D = new Vector2D(0, 0),
-    isStatic: boolean = false
-  ) {
+  constructor(position: Vector2D) {
     super();
     this.#position = position;
-    this.#fixed = fixed;
-    this.#isStatic = isStatic;
-  }
-
-  get isStatic() {
-    return this.#isStatic;
-  }
-
-  setHitbox(hitbox: Hitbox) {
-    hitbox.setParent(this);
-    this.#hitbox = hitbox;
-  }
-
-  getHitbox() {
-    return this.#hitbox;
   }
 
   /**
@@ -145,17 +122,10 @@ export default abstract class GameObject extends EventTarget {
    * @returns void
    */
   draw(ctx: CanvasRenderingContext2D) {
-    if (this.#fixed) {
-      ctx.save();
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-    }
     this.render(ctx);
     this.#children.forEach((child) => {
       child.draw(ctx);
     });
-    if (this.#fixed) {
-      ctx.restore();
-    }
   }
 
   /**

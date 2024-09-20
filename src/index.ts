@@ -1,23 +1,29 @@
-import GameEngine from "./GameEngine";
-import GameObject from "./GameObject";
-import Vector2D from "./Vector2D";
-import SceneNavigationEvent from "./SceneNavigationEvent";
-import Rectangle from "./shapes/Rectangle";
-import Camera2D from "./Camera2D";
-import CameraContext from "./CameraContext";
-import BorderOptions from "./BorderOptions";
-import Panel from "./UI/Panel";
-import Hitbox from "./Hitbox";
+import { GameEngine } from "./GameEngine";
+import { GameObject } from "./GameObject";
+import { CollisionBody } from "./CollisionBody";
+import { StaticCollisionBody } from "./StaticCollisionBody";
+import { CollisionShape } from "./CollisionShape";
+import { RectangleCollisionShape } from "./RectangleCollisionShape";
+import { Vector2D } from "./Vector2D";
+import { SceneNavigationEvent } from "./SceneNavigationEvent";
+import { Camera2D } from "./Camera2D";
+import { CameraContext } from "./CameraContext";
+import { BorderOptions } from "./BorderOptions";
+import { Panel } from "./UI/Panel";
+import { UiObject } from "./UI/UiObject";
 
-export default GameEngine;
 export {
+  GameEngine,
   GameObject,
+  CollisionBody,
+  StaticCollisionBody,
+  CollisionShape,
+  RectangleCollisionShape,
   Vector2D,
   SceneNavigationEvent,
-  Rectangle,
   Camera2D,
   CameraContext,
   BorderOptions,
   Panel,
-  Hitbox,
+  UiObject,
 };
