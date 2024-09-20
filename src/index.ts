@@ -7,6 +7,7 @@ import Camera2D from "./Camera2D";
 import CameraContext from "./CameraContext";
 import BorderOptions from "./BorderOptions";
 import Panel from "./UI/Panel";
+import Hitbox from "./Hitbox";
 
 export default GameEngine;
 export {
@@ -18,4 +19,5 @@ export {
   CameraContext,
   BorderOptions,
   Panel,
+  Hitbox,
 };

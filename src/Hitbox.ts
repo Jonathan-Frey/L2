@@ -1,14 +1,32 @@
+import GameObject from "./GameObject";
 import Vector2D from "./Vector2D";
 
 export default class Hitbox {
-  position: Vector2D;
-  width: number;
-  height: number;
+  #parent: GameObject | null | undefined = null;
+  #position: Vector2D;
+  #width: number;
+  #height: number;
 
   constructor(position: Vector2D, width: number, height: number) {
-    this.position = position;
-    this.width = width;
-    this.height = height;
+    this.#position = position;
+    this.#width = width;
+    this.#height = height;
+  }
+
+  getParent() {
+    return this.#parent;
+  }
+
+  setParent(parent: GameObject) {
+    this.#parent = parent;
+  }
+
+  get width() {
+    return this.#width;
+  }
+
+  get height() {
+    return this.#height;
   }
 
   /**
@@ -18,10 +36,18 @@ export default class Hitbox {
    */
   intersects(other: Hitbox): boolean {
     return !(
-      this.position.x > other.position.x + other.width ||
-      this.position.x + this.width < other.position.x ||
-      this.position.y > other.position.y + other.height ||
-      this.position.y + this.height < other.position.y
+      this.globalPosition.x > other.globalPosition.x + other.#width ||
+      this.globalPosition.x + this.#width < other.globalPosition.x ||
+      this.globalPosition.y > other.globalPosition.y + other.#height ||
+      this.globalPosition.y + this.#height < other.globalPosition.y
     );
+  }
+
+  /**
+   * Gets the global position of the GameObject.
+   * @returns the global position of the GameObject.
+   */
+  get globalPosition(): Vector2D {
+    return this.#parent?.globalPosition.add(this.#position) ?? this.#position;
   }
 }

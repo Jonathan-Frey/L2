@@ -19,14 +19,25 @@ export default abstract class GameObject extends EventTarget {
   #position: Vector2D = new Vector2D(0, 0);
   #fixed: boolean;
   #hitbox: Hitbox | null = null;
+  #isStatic: boolean;
 
-  constructor(fixed: boolean = false, position: Vector2D = new Vector2D(0, 0)) {
+  constructor(
+    fixed: boolean = false,
+    position: Vector2D = new Vector2D(0, 0),
+    isStatic: boolean = false
+  ) {
     super();
     this.#position = position;
     this.#fixed = fixed;
+    this.#isStatic = isStatic;
+  }
+
+  get isStatic() {
+    return this.#isStatic;
   }
 
   setHitbox(hitbox: Hitbox) {
+    hitbox.setParent(this);
     this.#hitbox = hitbox;
   }
 

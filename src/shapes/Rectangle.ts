@@ -16,7 +16,7 @@ export default class Rectangle extends GameObject {
     fixed: boolean = false,
     position?: Vector2D
   ) {
-    super(fixed, position);
+    super(fixed, position, true);
     this.#width = width;
     this.#height = height;
     this.#color = color;
