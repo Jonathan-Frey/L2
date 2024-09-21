@@ -52,7 +52,7 @@ export abstract class GameObject extends EventTarget {
    * @returns void
    */
   removeChild(child: GameObject) {
-    this.#children.filter((c) => c !== child);
+    this.#children = this.#children.filter((c) => c !== child);
   }
 
   getAllChildren(): GameObject[] {
