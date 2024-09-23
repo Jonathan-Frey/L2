@@ -104,6 +104,15 @@ export abstract class GameObject extends EventTarget {
    */
   update(delta: number) {
     this.process(delta);
+    this.#updateChildren(delta);
+  }
+
+  /**
+   * Updates all of the children of the GameObject. DO NOT OVERRIDE!
+   * @param delta the time since the last frame.
+   * @returns void
+   */
+  #updateChildren(delta: number) {
     this.#children.forEach((child) => {
       child.update(delta);
     });
@@ -123,6 +132,15 @@ export abstract class GameObject extends EventTarget {
    */
   draw(ctx: CanvasRenderingContext2D) {
     this.render(ctx);
+    this.#drawChildren(ctx);
+  }
+
+  /**
+   * Draws all of the children of the GameObject. DO NOT OVERRIDE!
+   * @param ctx the canvas rendering context.
+   * @returns void
+   */
+  #drawChildren(ctx: CanvasRenderingContext2D) {
     this.#children.forEach((child) => {
       child.draw(ctx);
     });

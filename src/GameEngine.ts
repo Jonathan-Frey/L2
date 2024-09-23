@@ -40,9 +40,12 @@ export class GameEngine {
     scene: GameObject,
     options?: { debug?: boolean }
   ) {
+    // contructor initialization is not broken down into multiple methods
+    // because typescript does not analyze the code to determine if the
+    // required properties are initialized by methods called in the constructor.
     this.#canvas = canvas;
     this.#ctx = this.#canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.setScene(scene);
+    this.#setScene(scene);
     this.#camera = new Camera2D(
       new Vector2D(0, 0),
       canvas.width,
@@ -60,12 +63,15 @@ export class GameEngine {
    * Sets the scene to be the active scene.
    * @param scene the scene to set as the active scene.
    */
-  private setScene(scene: GameObject) {
+  #setScene(scene: GameObject) {
     this.#scene = scene;
+    this.#setupNavigationListener();
+  }
+
+  #setupNavigationListener() {
     this.#scene.addEventListener("sceneNavigation", (e) => {
       const event = e as SceneNavigationEvent;
-      console.log(event.detail.scene);
-      this.setScene(event.detail.scene);
+      this.#setScene(event.detail.scene);
     });
   }
 
@@ -83,7 +89,7 @@ export class GameEngine {
   #firstFrame(timeStamp: number) {
     this.#startTime = timeStamp;
     this.#lastFrameTime = timeStamp;
-    this.#render(timeStamp);
+    this.#gameLoop(timeStamp);
   }
 
   // TODO: implement stopping the game, breaking the render loop and stop requesting frames.
@@ -93,29 +99,18 @@ export class GameEngine {
    * The main render loop of the game.
    * @param timeStamp the time that the current frame started.
    */
-  #render(timeStamp: number) {
-    // clear the canvas
-    this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
+  #gameLoop(timeStamp: number) {
+    this.#clearCanvas();
 
-    // calculate the delta time
-    const delta = this.#lastFrameTime ? timeStamp - this.#lastFrameTime : 0;
+    const delta = this.#calculateDelta(timeStamp);
 
-    // increment the frame counter
-    this.#frame += 1;
+    this.#incrementFrame();
 
-    // update the active scene
-    this.#scene.update(delta);
-    // check for collisions
-    this.checkCollisions();
+    this.#update(delta);
 
-    // Apply camera transformation
-    this.#ctx.save();
-    this.#ctx.translate(-this.#camera.position.x, -this.#camera.position.y);
-    // draw the active scene
-    this.#scene.draw(this.#ctx);
+    this.#checkCollisions();
 
-    // restore the canvas context
-    this.#ctx.restore();
+    this.#draw();
 
     // render the frame counter if in debug mode
     if (this.#debug) {
@@ -127,25 +122,60 @@ export class GameEngine {
     this.#lastFrameTime = timeStamp;
 
     // request the next frame
-    window.requestAnimationFrame((t) => this.#render(t));
+    window.requestAnimationFrame((t) => this.#gameLoop(t));
+  }
+
+  #clearCanvas() {
+    this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
+  }
+
+  #calculateDelta(timeStamp: number) {
+    return this.#lastFrameTime ? timeStamp - this.#lastFrameTime : 0;
+  }
+
+  #incrementFrame() {
+    this.#frame += 1;
+  }
+
+  #update(delta: number) {
+    this.#scene.update(delta);
   }
 
   /**
    * Checks for collisions between all game objects.
    */
-  checkCollisions() {
-    const objects = this.#scene
-      .getAllChildren()
-      .filter((obj) => obj instanceof CollisionBody);
+  #checkCollisions() {
+    const objects = this.#getAllCollisionBodyChildren();
     for (let i = 0; i < objects.length; i++) {
       for (let j = i + 1; j < objects.length; j++) {
         const objA = objects[i];
         const objB = objects[j];
         if (objA.isCollidingWith(objB)) {
-          objA.onCollision(objB);
-          objB.onCollision(objA);
+          this.#notifyCollisions(objA, objB);
         }
       }
     }
+  }
+
+  #getAllCollisionBodyChildren() {
+    return this.#scene
+      .getAllChildren()
+      .filter((obj) => obj instanceof CollisionBody);
+  }
+
+  #notifyCollisions(objA: CollisionBody, objB: CollisionBody) {
+    objA.onCollision(objB);
+    objB.onCollision(objA);
+  }
+
+  #draw() {
+    // Apply camera transformation
+    this.#ctx.save();
+    this.#ctx.translate(-this.#camera.position.x, -this.#camera.position.y);
+    // draw the active scene
+    this.#scene.draw(this.#ctx);
+
+    // restore the canvas context
+    this.#ctx.restore();
   }
 }
