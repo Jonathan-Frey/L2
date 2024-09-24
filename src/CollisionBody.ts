@@ -1,3 +1,4 @@
+import { CollisionLayers } from "./CollisionLayers";
 import { CollisionShape } from "./CollisionShape";
 import { GameObject } from "./GameObject";
 import { Vector2D } from "./Vector2D";
@@ -7,11 +8,17 @@ import { Vector2D } from "./Vector2D";
  */
 export abstract class CollisionBody extends GameObject {
   #collisionShape!: CollisionShape;
+  #collisionLayers: CollisionLayers;
   type: string = "CollisionBody";
 
-  constructor(position: Vector2D, collisionShape: CollisionShape) {
+  constructor(
+    position: Vector2D,
+    collisionShape: CollisionShape,
+    collisionLayers: CollisionLayers = new CollisionLayers()
+  ) {
     super(position);
     this.#setCollisionShape(collisionShape);
+    this.#collisionLayers = collisionLayers;
   }
 
   /**
@@ -32,13 +39,19 @@ export abstract class CollisionBody extends GameObject {
     this.#collisionShape.setParent(this);
   }
 
+  getCollisionLayers() {
+    return this.#collisionLayers;
+  }
+
   /**
    * Checks if this CollisionBody is colliding with another CollisionBody.
    * @param other The other CollisionBody to check against.
    * @returns True if the CollisionBodies are colliding, false otherwise.
    */
   isCollidingWith(other: CollisionBody) {
-    return this.collisionShape.intersects(other.collisionShape);
+    if (this.#collisionLayers.overlaps(other.getCollisionLayers())) {
+      return this.collisionShape.intersects(other.collisionShape);
+    }
   }
 
   /**

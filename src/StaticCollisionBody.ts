@@ -1,11 +1,16 @@
 import { CollisionBody } from "./CollisionBody";
+import { CollisionLayers } from "./CollisionLayers";
 import { CollisionShape } from "./CollisionShape";
 import { Vector2D } from "./Vector2D";
 
 export abstract class StaticCollisionBody extends CollisionBody {
   type = "StaticCollisionBody";
-  constructor(position: Vector2D, collisionShape: CollisionShape) {
-    super(position, collisionShape);
+  constructor(
+    position: Vector2D,
+    collisionShape: CollisionShape,
+    collisionLayers = new CollisionLayers()
+  ) {
+    super(position, collisionShape, collisionLayers);
   }
 
   override onCollision(other: CollisionBody) {

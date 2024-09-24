@@ -1,12 +1,17 @@
 import { CollisionBody } from "./CollisionBody";
+import { CollisionLayers } from "./CollisionLayers";
 import { CollisionShape } from "./CollisionShape";
 import { Vector2D } from "./Vector2D";
 
 export class Area extends CollisionBody {
   type: string = "Area";
   #collidingBodies: CollisionBody[] = [];
-  constructor(position: Vector2D, collisionShape: CollisionShape) {
-    super(position, collisionShape);
+  constructor(
+    position: Vector2D,
+    collisionShape: CollisionShape,
+    collisionLayers: CollisionLayers = new CollisionLayers()
+  ) {
+    super(position, collisionShape, collisionLayers);
   }
 
   #addCollidingBody(other: CollisionBody) {
