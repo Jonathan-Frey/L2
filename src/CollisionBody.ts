@@ -52,7 +52,7 @@ export abstract class CollisionBody extends GameObject {
     );
     if (other.type === "StaticCollisionBody") {
       this.position = this.position.add(intersectionVector);
-    } else {
+    } else if (other.type === "CollisionBody") {
       this.position = this.position.add(intersectionVector.multiply(0.5));
     }
   }

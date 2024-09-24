@@ -11,6 +11,7 @@ import { CameraContext } from "./CameraContext";
 import { BorderOptions } from "./BorderOptions";
 import { Panel } from "./UI/Panel";
 import { UiObject } from "./UI/UiObject";
+import { Area } from "./Area";
 
 export {
   GameEngine,
@@ -26,4 +27,5 @@ export {
   BorderOptions,
   Panel,
   UiObject,
+  Area,
 };
