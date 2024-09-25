@@ -1,9 +1,8 @@
 import { GameObject } from "./GameObject";
 import { SceneNavigationEvent } from "./SceneNavigationEvent";
-import { Camera2D } from "./Camera2D";
 import { Vector2D } from "./Vector2D";
-import { CameraContext } from "./CameraContext";
 import { CollisionBody } from "./CollisionBody";
+import { GameContext } from "./GameContext";
 
 /**
  * The main game engine class.
@@ -29,9 +28,6 @@ export class GameEngine {
   // the game objects that are part of the game.
   #scene!: GameObject;
 
-  // the camera that is used to translate from world space to screen space.
-  #camera: Camera2D;
-
   // the frame counter.
   #frame: number = 0;
 
@@ -46,17 +42,17 @@ export class GameEngine {
     this.#canvas = canvas;
     this.#ctx = this.#canvas.getContext("2d") as CanvasRenderingContext2D;
     this.#setScene(scene);
-    this.#camera = new Camera2D(
-      new Vector2D(0, 0),
-      canvas.width,
-      canvas.height
-    );
-    CameraContext.getInstance().setCamera(this.#camera);
+    this.#setupGameContext();
+
     if (options?.debug) {
       this.#debug = options.debug;
     } else {
       this.#debug = false;
     }
+  }
+
+  #setupGameContext() {
+    GameContext.getInstance().setGameEngine(this);
   }
 
   /**
@@ -168,14 +164,29 @@ export class GameEngine {
     objB.onCollision(objA);
   }
 
-  #draw() {
-    // Apply camera transformation
-    this.#ctx.save();
-    this.#ctx.translate(-this.#camera.position.x, -this.#camera.position.y);
-    // draw the active scene
-    this.#scene.draw(this.#ctx);
+  #getCanvasCenter() {
+    return new Vector2D(
+      this.#canvas.getBoundingClientRect().width / 2,
+      this.#canvas.getBoundingClientRect().height / 2
+    );
+  }
 
-    // restore the canvas context
+  #applyCameraTransformation() {
+    this.#ctx.save();
+    const cameraPosition = GameContext.getInstance().getActiveCameraPosition();
+    if (cameraPosition) {
+      const cameraOffset = cameraPosition.subtract(this.#getCanvasCenter());
+      this.#ctx.translate(-cameraOffset.x, -cameraOffset.y);
+    }
+  }
+
+  #resetCameraTransformation() {
     this.#ctx.restore();
+  }
+
+  #draw() {
+    this.#applyCameraTransformation();
+    this.#scene.draw(this.#ctx);
+    this.#resetCameraTransformation();
   }
 }
