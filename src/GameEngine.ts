@@ -60,15 +60,10 @@ export class GameEngine {
    * @param scene the scene to set as the active scene.
    */
   #setScene(scene: GameObject) {
+    if (this.#scene) {
+      this.#scene.remove();
+    }
     this.#scene = scene;
-    this.#setupNavigationListener();
-  }
-
-  #setupNavigationListener() {
-    this.#scene.addEventListener("sceneNavigation", (e) => {
-      const event = e as SceneNavigationEvent;
-      this.#setScene(event.detail.scene);
-    });
   }
 
   get canvas() {
@@ -194,5 +189,9 @@ export class GameEngine {
     this.#applyCameraTransformation();
     this.#scene.draw(this.#ctx);
     this.#resetCameraTransformation();
+  }
+
+  navigateToScene(scene: GameObject) {
+    this.#setScene(scene);
   }
 }

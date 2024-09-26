@@ -152,4 +152,20 @@ export abstract class GameObject extends EventTarget {
    * @returns void
    */
   render(ctx: CanvasRenderingContext2D) {}
+
+  removeEventListeners(): void {}
+
+  onRemove() {
+    this.#children.forEach((child) => child.onRemove());
+    this.removeEventListeners();
+  }
+
+  /**
+   * Removes the GameObject from its parent.
+   * @returns void
+   */
+  remove() {
+    this.#parent?.removeChild(this);
+    this.onRemove();
+  }
 }

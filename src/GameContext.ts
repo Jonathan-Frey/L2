@@ -1,6 +1,7 @@
 import { Camera } from "./Camera";
 import { ClickData } from "./ClickData";
 import { GameEngine } from "./GameEngine";
+import { GameObject } from "./GameObject";
 import { Vector2D } from "./Vector2D";
 
 export class GameContext {
@@ -128,5 +129,9 @@ export class GameContext {
 
   clearClickData() {
     this.#triggeredClick = null;
+  }
+
+  navigateToScene(scene: GameObject) {
+    this.#gameEngine?.navigateToScene(scene);
   }
 }
