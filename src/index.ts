@@ -7,7 +7,6 @@ import { CollisionShape } from "./CollisionShape";
 import { RectangleCollisionShape } from "./RectangleCollisionShape";
 import { CollisionLayers } from "./CollisionLayers";
 import { Vector2D } from "./Vector2D";
-import { SceneNavigationEvent } from "./SceneNavigationEvent";
 import { Camera } from "./Camera";
 import { BorderOptions } from "./BorderOptions";
 import { Panel } from "./UI/Panel";
@@ -24,7 +23,6 @@ export {
   RectangleCollisionShape,
   CollisionLayers,
   Vector2D,
-  SceneNavigationEvent,
   Camera,
   BorderOptions,
   Panel,

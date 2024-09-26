@@ -1,5 +1,4 @@
 import { GameObject } from "./GameObject";
-import { SceneNavigationEvent } from "./SceneNavigationEvent";
 import { Vector2D } from "./Vector2D";
 import { CollisionBody } from "./CollisionBody";
 import { GameContext } from "./GameContext";
@@ -51,6 +50,10 @@ export class GameEngine {
     }
   }
 
+  /**
+   * Sets up the game context singleton.
+   * @returns void
+   */
   #setupGameContext() {
     GameContext.getInstance().setGameEngine(this);
   }
@@ -58,6 +61,7 @@ export class GameEngine {
   /**
    * Sets the scene to be the active scene.
    * @param scene the scene to set as the active scene.
+   * returns void
    */
   #setScene(scene: GameObject) {
     if (this.#scene) {
@@ -66,12 +70,17 @@ export class GameEngine {
     this.#scene = scene;
   }
 
+  /**
+   * Gets the canvas element in which the game runs.
+   * @returns the canvas element in which the game runs.
+   */
   get canvas() {
     return this.#canvas;
   }
 
   /**
    * Starts the game loop.
+   * @returns void
    */
   start() {
     window.requestAnimationFrame((t) => this.#firstFrame(t));
@@ -122,24 +131,43 @@ export class GameEngine {
     window.requestAnimationFrame((t) => this.#gameLoop(t));
   }
 
+  /**
+   * Clears the canvas.
+   * @returns void
+   */
   #clearCanvas() {
     this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
   }
 
+  /**
+   * Calculates the time since the last frame.
+   * @param timeStamp the time that the current frame started.
+   * @returns the time since the last frame.
+   */
   #calculateDelta(timeStamp: number) {
     return this.#lastFrameTime ? timeStamp - this.#lastFrameTime : 0;
   }
 
+  /**
+   * Increments the frame counter.
+   * @returns void
+   */
   #incrementFrame() {
     this.#frame += 1;
   }
 
+  /**
+   * Updates the scene and all of its children. For logical/process updates.
+   * @param delta the time since the last frame.
+   * @returns void
+   */
   #update(delta: number) {
     this.#scene.update(delta);
   }
 
   /**
-   * Checks for collisions between all game objects.
+   * Checks for collisions between all game objects. and notifies the objects of the collisions.
+   * @returns void
    */
   #checkCollisions() {
     const objects = this.#getAllCollisionBodyChildren();
@@ -154,17 +182,31 @@ export class GameEngine {
     }
   }
 
+  /**
+   * Gets all of the CollisionBody objects in the scene.
+   * @returns all of the CollisionBody objects in the scene.
+   */
   #getAllCollisionBodyChildren() {
     return this.#scene
       .getAllChildren()
       .filter((obj) => obj instanceof CollisionBody);
   }
 
+  /**
+   * Notifies the objects of the collision.
+   * @param objA the first object in the collision.
+   * @param objB the second object in the collision.
+   * @returns void
+   */
   #notifyCollisions(objA: CollisionBody, objB: CollisionBody) {
     objA.onCollision(objB);
     objB.onCollision(objA);
   }
 
+  /**
+   * Gets the center of the canvas.
+   * @returns the center of the canvas.
+   */
   #getCanvasCenter() {
     return new Vector2D(
       this.#canvas.getBoundingClientRect().width / 2,
@@ -172,6 +214,10 @@ export class GameEngine {
     );
   }
 
+  /**
+   * Applies the camera transformation to the canvas.
+   * @returns void
+   */
   #applyCameraTransformation() {
     this.#ctx.save();
     const cameraPosition = GameContext.getInstance().getActiveCameraPosition();
@@ -181,16 +227,29 @@ export class GameEngine {
     }
   }
 
+  /**
+   * Resets the camera transformation on the canvas.
+   * @returns void
+   */
   #resetCameraTransformation() {
     this.#ctx.restore();
   }
 
+  /**
+   * Draws the scene and all of its children. for rendering.
+   * @returns void
+   */
   #draw() {
     this.#applyCameraTransformation();
     this.#scene.draw(this.#ctx);
     this.#resetCameraTransformation();
   }
 
+  /**
+   * Navigates to a new scene.
+   * @param scene the scene to navigate to.
+   * @returns void
+   */
   navigateToScene(scene: GameObject) {
     this.#setScene(scene);
   }

@@ -14,6 +14,7 @@ export abstract class CollisionShape {
 
   /**
    * Sets the parent CollisionBody of this CollisionShape.
+   * @returns void
    */
   setParent(parent: CollisionBody) {
     this.#parent = parent;

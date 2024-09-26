@@ -1,4 +1,3 @@
-import { SceneNavigationEvent } from "./SceneNavigationEvent";
 import { Vector2D } from "./Vector2D";
 
 /**
@@ -70,6 +69,7 @@ export abstract class GameObject extends EventTarget {
   get position() {
     return this.#position;
   }
+
   /**
    * Gets the global position of the GameObject.
    * @returns the global position of the GameObject.
@@ -87,14 +87,6 @@ export abstract class GameObject extends EventTarget {
     const deltaY = position.y - this.#position.y;
 
     this.#position = position;
-  }
-
-  /**
-   * Navigates to a new scene.
-   * @param scene the scene to navigate to.
-   */
-  navigateTo(scene: GameObject) {
-    this.dispatchEvent(new SceneNavigationEvent({ detail: { scene: scene } }));
   }
 
   /**
@@ -153,15 +145,25 @@ export abstract class GameObject extends EventTarget {
    */
   render(ctx: CanvasRenderingContext2D) {}
 
+  /**
+   * Removes the event listeners from the GameObject.
+   * TO BE OVERRIDDEN BY SUBCLASSES TO REMOVE EVENT LISTENERS WHEN THE GAME OBJECT IS REMOVED FROM THE GAME SCENE.
+   * @returns void
+   */
   removeEventListeners(): void {}
 
+  /**
+   * Called when the GameObject is removed from the game.
+   * Removes all event listeners and calls onRemove on all children.
+   * @returns void
+   */
   onRemove() {
     this.#children.forEach((child) => child.onRemove());
     this.removeEventListeners();
   }
 
   /**
-   * Removes the GameObject from its parent.
+   * Removes the GameObject from its parent. Calls onRemove to clean up the GameObject.
    * @returns void
    */
   remove() {
