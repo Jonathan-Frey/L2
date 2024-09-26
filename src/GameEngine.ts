@@ -71,6 +71,10 @@ export class GameEngine {
     });
   }
 
+  get canvas() {
+    return this.#canvas;
+  }
+
   /**
    * Starts the game loop.
    */
@@ -105,6 +109,8 @@ export class GameEngine {
     this.#update(delta);
 
     this.#checkCollisions();
+
+    GameContext.getInstance().clearClickData();
 
     this.#draw();
 
