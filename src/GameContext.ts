@@ -11,6 +11,8 @@ export class GameContext {
   static #instance: GameContext;
 
   #triggeredClick: ClickData | null = null;
+  #justPressedKeys: Set<string> = new Set();
+  #pressedKeys: Set<string> = new Set();
   #gameEngine: GameEngine | null = null;
   #activeCamera: Camera | null = null;
 
@@ -35,7 +37,7 @@ export class GameContext {
    */
   setGameEngine(gameEngine: GameEngine) {
     this.#gameEngine = gameEngine;
-    this.#addCanvasListeners();
+    this.#addEventListeners();
   }
 
   /**
@@ -121,11 +123,12 @@ export class GameContext {
   }
 
   /**
-   * Sets up the canvas listeners for user input.
+   * Sets up the event listeners for user input.
    * @returns void
    */
-  #addCanvasListeners() {
+  #addEventListeners() {
     this.#addClickListener();
+    this.#addInputListener();
   }
 
   /**
@@ -134,7 +137,6 @@ export class GameContext {
    */
   #addClickListener() {
     this.#gameEngine?.canvas.addEventListener("click", (event) => {
-      console.log("click");
       const clickPosition = this.#getClickPosition(event);
       if (clickPosition !== null) {
         const clickGlobalPosition = this.#getClickGlobalPosition(clickPosition);
@@ -200,8 +202,36 @@ export class GameContext {
    * Clears the click data.
    * @returns void
    */
-  clearClickData() {
+  #clearClickData() {
     this.#triggeredClick = null;
+  }
+
+  #addInputListener() {
+    document.addEventListener("keydown", (event) => {
+      this.#justPressedKeys.add(event.key);
+      this.#pressedKeys.add(event.key);
+    });
+
+    document.addEventListener("keyup", (event) => {
+      this.#pressedKeys.delete(event.key);
+    });
+  }
+
+  isPressed(key: string) {
+    return this.#pressedKeys.has(key);
+  }
+
+  isJustPressed(key: string) {
+    return this.#justPressedKeys.has(key);
+  }
+
+  #clearKeyPressData() {
+    this.#justPressedKeys.clear();
+  }
+
+  clearInput() {
+    this.#clearClickData();
+    this.#clearKeyPressData();
   }
 
   /**

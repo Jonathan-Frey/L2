@@ -114,7 +114,7 @@ export class GameEngine {
 
     this.#checkCollisions();
 
-    GameContext.getInstance().clearClickData();
+    GameContext.getInstance().clearInput();
 
     this.#draw();
 
