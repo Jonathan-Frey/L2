@@ -209,13 +209,13 @@ Returns: `void`
 
 <br>
 
-#### `get canvas()`
+#### `canvas`
 
 Gets the html canvas element in where the game is rendered.
 
 Returns: `HTMLCanvasElement`
 
-<br>
+---
 
 ### GameObject
 
@@ -241,25 +241,25 @@ Returns: `GameObject`
 
 <br>
 
-#### `addChild(child)`
+#### `addChild(child: GameObject)`
 
 Adds a child to this objects children.
 
-| Parameter | Type       | Description                     |
-| --------- | ---------- | ------------------------------- |
-| child     | GameObject | The GameObject to add as child. |
+Parameters:
+
+- `child`: The GameObject to add as child.
 
 Returns: `void`
 
 <br>
 
-#### `removeChild(child)`
+#### `removeChild(child: GameObject)`
 
 Removes a child from this objects children.
 
-| Parameter | Type       | Description               |
-| --------- | ---------- | ------------------------- |
-| child     | GameObject | The GameObject to remove. |
+Parameters:
+
+- `child`: The GameObject child to remove.
 
 Returns: `void`
 
@@ -273,7 +273,7 @@ Returns: `GameObject[]`
 
 <br>
 
-#### `get position()`
+#### `position()`
 
 Gets the position of the GameObject.
 
@@ -281,19 +281,18 @@ Returns: `Vector2D`
 
 <br>
 
-#### `set position(position)`
+#### `position(position: Vector2D)`
 
 Sets the position of the GameObject.
+Parameters:
 
-| Parameter | Type     | Description       |
-| --------- | -------- | ----------------- |
-| position  | Vector2D | The new position. |
+- `position`: The new position.
 
 Returns: `void`
 
 <br>
 
-#### `get globalPosition()`
+#### `globalPosition()`
 
 Gets the global position of the GameObject. The global position is the position of the GameObject relative to the root GameObject.
 
@@ -301,49 +300,45 @@ Returns: `Vector2D`
 
 <br>
 
-#### `update(delta)`
+#### `update(delta: number)`
 
 Called every frame by the game engine. !!!DO NOT OVERRIDE!!!
 
-| Parameter | Type   | Description                                    |
-| --------- | ------ | ---------------------------------------------- |
-| delta     | number | The time in milliseconds since the last frame. |
+Parameters:
+
+- `delta`: The time in milliseconds since the last frame.
 
 Returns: `void`
 
 <br>
 
-#### `process(delta)`
+#### `process(delta: number)`
 
 Called every frame by the game engine. This should be overridden by the user to add custom logic.
 
-| Parameter | Type   | Description                                    |
-| --------- | ------ | ---------------------------------------------- |
-| delta     | number | The time in milliseconds since the last frame. |
+- `delta`: The time in milliseconds since the last frame.
 
 Returns: `void`
 
 <br>
 
-#### `draw(ctx)`
+#### `draw(ctx: CanvasRenderingContext2D)`
 
 Called every frame by the game engine. !!!DO NOT OVERRIDE!!!
 
-| Parameter | Type                     | Description                         |
-| --------- | ------------------------ | ----------------------------------- |
-| ctx       | CanvasRenderingContext2D | The rendering context of the canvas |
+Parameters:
+
+- `ctx`: The rendering context of the canvas element.
 
 Returns: `void`
 
 <br>
 
-#### `render(ctx)`
+#### `render(ctx: CanvasRenderingContext2D)`
 
 Called every frame by the game engine. This should be overridden by the user to add custom rendering logic.
 
-| Parameter | Type                     | Description                         |
-| --------- | ------------------------ | ----------------------------------- |
-| ctx       | CanvasRenderingContext2D | The rendering context of the canvas |
+- `ctx`: The rendering context of the canvas element.
 
 Returns: `void`
 
@@ -371,3 +366,284 @@ Returns: `void`
 Removes the event listeners from this object. Should be overridden by the user to remove custom event listeners.
 
 Returns: `void`
+
+---
+
+### GameContext
+
+A singleton that holds the context of the game.
+
+#### Methods
+
+#### `getInstance()`
+
+Gets the singleton instance of the GameContext.
+
+Returns: `GameContext`
+
+<br>
+
+#### `setGameEngine(gameEngine: GameEngine)`
+
+Sets the game engine.
+
+Parameters:
+
+- `gameEngine`: The game engine to set.
+
+Returns: `void`
+
+<br>
+
+#### `getCanvasCenter()`
+
+Calculates the center of the canvas.
+
+Returns: `Vector2D | null`
+
+<br>
+
+#### `getCanvasLeft()`
+
+Calculates the left position of the canvas.
+
+Returns: `number | null`
+
+<br>
+
+#### `getCanvasTop()`
+
+Calculates the top position of the canvas.
+
+Returns: `number | null`
+
+<br>
+
+#### `setActiveCamera(camera: Camera)`
+
+Sets the active camera.
+
+Parameters:
+
+- `camera`: The camera to set as active.
+
+Returns: `void`
+
+<br>
+
+#### `getActiveCameraPosition()`
+
+Gets the active camera's position.
+
+Returns: `Vector2D | null`
+
+<br>
+
+#### `getCameraTransform()`
+
+Gets the camera transformation.
+
+Returns: `Vector2D | null`
+
+<br>
+
+#### `isActiveCamera(camera: Camera)`
+
+Checks if the given camera is the active camera.
+
+Parameters:
+
+- `camera`: The camera to check.
+
+Returns: `boolean`
+
+<br>
+
+#### `isMouseClicked()`
+
+Checks if the mouse is clicked.
+
+Returns: `boolean`
+
+<br>
+
+#### `getClickData()`
+
+Gets the click data.
+
+Returns: `ClickData | null`
+
+<br>
+
+#### `clearInput()`
+
+Clears the input data (click and key press data).
+
+Returns: `void`
+
+<br>
+
+#### `isPressed(key: string)`
+
+Checks if the given key is pressed.
+
+Parameters:
+
+- `key`: The key to check.
+
+Returns: `boolean`
+
+<br>
+
+#### `isJustPressed(key: string)`
+
+Checks if the given key was just pressed.
+
+Parameters:
+
+- `key`: The key to check.
+
+Returns: `boolean`
+
+<br>
+
+#### `navigateToScene(scene: GameObject)`
+
+Notifies the game engine to navigate to the given scene.
+
+Parameters:
+
+- `scene`: The scene to navigate to.
+
+Returns: `void`
+
+---
+
+### `Vector2D`
+
+A class representing a 2D vector.
+
+#### `constructor(x: number, y: number)`
+
+Creates a new `Vector2D` instance.
+
+Parameters:
+
+- `x`: The x component of the vector.
+- `y`: The y component of the vector.
+
+<br>
+
+#### `x`
+
+Gets the x component of the vector.
+
+Returns: `number`
+
+<br>
+
+#### `y`
+
+Gets the y component of the vector.
+
+Returns: `number`
+
+<br>
+
+#### `add(v: Vector2D)`
+
+Adds a vector to this vector and returns the result.
+
+Parameters:
+
+- `v`: The vector to add.
+
+Returns: `Vector2D`
+
+<br>
+
+#### `subtract(v: Vector2D)`
+
+Subtracts a vector from this vector and returns the result.
+
+Parameters:
+
+- `v`: The vector to subtract.
+
+Returns: `Vector2D`
+
+<br>
+
+#### `multiply(scalar: number)`
+
+Multiplies the vector by a scalar and returns the result.
+
+Parameters:
+
+- `scalar`: The scalar to multiply the vector by.
+
+Returns: `Vector2D`
+
+<br>
+
+#### `divide(scalar: number)`
+
+Divides the vector by a scalar and returns the result.
+
+Parameters:
+
+- `scalar`: The scalar to divide the vector by.
+
+Returns: `Vector2D`
+
+<br>
+
+#### `magnitude()`
+
+Gets the magnitude of the vector.
+
+Returns: `number`
+
+<br>
+
+#### `normalize()`
+
+Normalizes the vector and returns the result.
+
+Returns: `Vector2D`
+
+<br>
+
+#### `dot(v: Vector2D)`
+
+Gets the dot product of this vector and another vector.
+
+Parameters:
+
+- `v`: The other vector.
+
+Returns: `number`
+
+<br>
+
+#### `angle(v: Vector2D)`
+
+Gets the angle between this vector and another vector.
+
+Parameters:
+
+- `v`: The other vector.
+
+Returns: `number`
+
+<br>
+
+#### `distance(v: Vector2D)`
+
+Gets the distance between this vector and another vector.
+
+Parameters:
+
+- `v`: The other vector.
+
+Returns: `number`
