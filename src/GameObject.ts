@@ -1,4 +1,3 @@
-import { SceneNavigationEvent } from "./SceneNavigationEvent";
 import { Vector2D } from "./Vector2D";
 
 /**
@@ -70,6 +69,7 @@ export abstract class GameObject extends EventTarget {
   get position() {
     return this.#position;
   }
+
   /**
    * Gets the global position of the GameObject.
    * @returns the global position of the GameObject.
@@ -90,20 +90,21 @@ export abstract class GameObject extends EventTarget {
   }
 
   /**
-   * Navigates to a new scene.
-   * @param scene the scene to navigate to.
-   */
-  navigateTo(scene: GameObject) {
-    this.dispatchEvent(new SceneNavigationEvent({ detail: { scene: scene } }));
-  }
-
-  /**
    * a wrapper for the process method that is called on the GameObject and all of its children by the game engine. DO NOT OVERRIDE!
    * @param delta the time since the last frame.
    * @returns void
    */
   update(delta: number) {
     this.process(delta);
+    this.#updateChildren(delta);
+  }
+
+  /**
+   * Updates all of the children of the GameObject. DO NOT OVERRIDE!
+   * @param delta the time since the last frame.
+   * @returns void
+   */
+  #updateChildren(delta: number) {
     this.#children.forEach((child) => {
       child.update(delta);
     });
@@ -123,6 +124,15 @@ export abstract class GameObject extends EventTarget {
    */
   draw(ctx: CanvasRenderingContext2D) {
     this.render(ctx);
+    this.#drawChildren(ctx);
+  }
+
+  /**
+   * Draws all of the children of the GameObject. DO NOT OVERRIDE!
+   * @param ctx the canvas rendering context.
+   * @returns void
+   */
+  #drawChildren(ctx: CanvasRenderingContext2D) {
     this.#children.forEach((child) => {
       child.draw(ctx);
     });
@@ -134,4 +144,30 @@ export abstract class GameObject extends EventTarget {
    * @returns void
    */
   render(ctx: CanvasRenderingContext2D) {}
+
+  /**
+   * Removes the event listeners from the GameObject.
+   * TO BE OVERRIDDEN BY SUBCLASSES TO REMOVE EVENT LISTENERS WHEN THE GAME OBJECT IS REMOVED FROM THE GAME SCENE.
+   * @returns void
+   */
+  removeEventListeners(): void {}
+
+  /**
+   * Called when the GameObject is removed from the game.
+   * Removes all event listeners and calls onRemove on all children.
+   * @returns void
+   */
+  onRemove() {
+    this.#children.forEach((child) => child.onRemove());
+    this.removeEventListeners();
+  }
+
+  /**
+   * Removes the GameObject from its parent. Calls onRemove to clean up the GameObject.
+   * @returns void
+   */
+  remove() {
+    this.#parent?.removeChild(this);
+    this.onRemove();
+  }
 }
