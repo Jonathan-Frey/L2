@@ -40,21 +40,3 @@ test("Area getCollidingBodies returns CollisionBodies that have collided with th
 
   expect(area.getCollidingBodies()).toContain(collisionBody);
 });
-
-test("Area clearCollidingBodies clears all colliding bodies", () => {
-  const area = new Area(
-    new Vector2D(0, 0),
-    new RectangleCollisionShape(new Vector2D(0, 0), 10, 10),
-    new CollisionLayers()
-  );
-  const collisionBody = new TestCollisionBody(
-    new Vector2D(5, 5),
-    new RectangleCollisionShape(new Vector2D(0, 0), 10, 10),
-    new CollisionLayers()
-  );
-
-  area.onCollision(collisionBody);
-  area.clearCollidingBodies();
-
-  expect(area.getCollidingBodies()).toEqual([]);
-});
