@@ -8,7 +8,7 @@ import { Vector2D } from "./Vector2D";
  * A singleton that holds the context of the game.
  */
 export class GameContext {
-  static #instance: GameContext;
+  static #instance: GameContext | null = null;
 
   #triggeredClick: ClickData | null = null;
   #justPressedKeys: Set<string> = new Set();
@@ -28,6 +28,10 @@ export class GameContext {
       GameContext.#instance = new GameContext();
     }
     return GameContext.#instance;
+  }
+
+  static resetInstance() {
+    GameContext.#instance = null;
   }
 
   /**
@@ -187,6 +191,8 @@ export class GameContext {
   isMouseClicked() {
     if (this.#triggeredClick) {
       return true;
+    } else {
+      return false;
     }
   }
 
