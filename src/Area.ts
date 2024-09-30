@@ -22,7 +22,7 @@ export class Area extends CollisionBody {
     return this.#collidingBodies;
   }
 
-  clearCollidingBodies() {
+  #clearCollidingBodies() {
     this.#collidingBodies = [];
   }
 
@@ -32,6 +32,6 @@ export class Area extends CollisionBody {
 
   override update(delta: number) {
     super.update(delta);
-    this.clearCollidingBodies();
+    this.#clearCollidingBodies();
   }
 }
