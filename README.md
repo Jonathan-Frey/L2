@@ -1,6 +1,6 @@
 # Canvas Game Engine
 
-A module for creating simple 2D games using object oriented programming. Utilizes the HTML Canvas Api for rendering.
+A module for creating simple 2D games using object oriented programming. Utilizes the HTML Canvas API for rendering.
 
 Made for the in 2024 as a part of the course 1dv610 at Linnaeus University.
 
