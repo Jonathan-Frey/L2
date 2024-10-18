@@ -138,7 +138,7 @@ export default class Player extends CollisionBody {
     }
 
     // apply the movement
-    this.position = this.position.add(this.#velocity.multiply(delta / 1000));
+    this.position = this.position.add(this.#velocity.multiply(delta));
 
     // reset velocity
     this.#velocity = new Vector2D(0, 0);

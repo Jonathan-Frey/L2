@@ -9,6 +9,7 @@ import { Vector2D } from "./Vector2D";
  */
 export class GameContext {
   static #instance: GameContext | null = null;
+  #canvasSize: Vector2D | null = null;
 
   #triggeredClick: ClickData | null = null;
   #justPressedKeys: Set<string> = new Set();
@@ -42,6 +43,17 @@ export class GameContext {
   setGameEngine(gameEngine: GameEngine) {
     this.#gameEngine = gameEngine;
     this.#addEventListeners();
+  }
+
+  getCanvasSize() {
+    if (this.#gameEngine?.canvas) {
+      return new Vector2D(
+        this.#gameEngine.canvas.width,
+        this.#gameEngine.canvas.height
+      );
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -214,8 +226,10 @@ export class GameContext {
 
   #addInputListener() {
     document.addEventListener("keydown", (event) => {
-      this.#justPressedKeys.add(event.key);
-      this.#pressedKeys.add(event.key);
+      if (!event.repeat) {
+        this.#justPressedKeys.add(event.key);
+        this.#pressedKeys.add(event.key);
+      }
     });
 
     document.addEventListener("keyup", (event) => {

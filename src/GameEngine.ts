@@ -114,15 +114,15 @@ export class GameEngine {
 
     this.#checkCollisions();
 
-    GameContext.getInstance().clearInput();
-
     this.#draw();
 
     // render the frame counter if in debug mode
     if (this.#debug) {
       this.#ctx.fillStyle = "black";
-      this.#ctx.fillText(`FPS: ${Math.round(1000 / delta)}`, 10, 10);
+      this.#ctx.fillText(`FPS: ${Math.round(1 / delta)}`, 10, 10);
     }
+
+    GameContext.getInstance().clearInput();
 
     // update the last frame time
     this.#lastFrameTime = timeStamp;
@@ -145,7 +145,7 @@ export class GameEngine {
    * @returns the time since the last frame.
    */
   #calculateDelta(timeStamp: number) {
-    return this.#lastFrameTime ? timeStamp - this.#lastFrameTime : 0;
+    return this.#lastFrameTime ? (timeStamp - this.#lastFrameTime) / 1000 : 0;
   }
 
   /**
@@ -204,17 +204,6 @@ export class GameEngine {
   }
 
   /**
-   * Gets the center of the canvas.
-   * @returns the center of the canvas.
-   */
-  #getCanvasCenter() {
-    return new Vector2D(
-      this.#canvas.getBoundingClientRect().width / 2,
-      this.#canvas.getBoundingClientRect().height / 2
-    );
-  }
-
-  /**
    * Applies the camera transformation to the canvas.
    * @returns void
    */
@@ -222,7 +211,9 @@ export class GameEngine {
     this.#ctx.save();
     const cameraPosition = GameContext.getInstance().getActiveCameraPosition();
     if (cameraPosition) {
-      const cameraOffset = cameraPosition.subtract(this.#getCanvasCenter());
+      const cameraOffset = cameraPosition.subtract(
+        GameContext.getInstance().getCanvasCenter()!
+      );
       this.#ctx.translate(-cameraOffset.x, -cameraOffset.y);
     }
   }
