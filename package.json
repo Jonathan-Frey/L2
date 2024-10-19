@@ -1,6 +1,6 @@
 {
   "name": "jf-canvas-game-engine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Made in 2024 as a part of the course 1dv610 at Linnaeus University",
   "type": "module",
   "main": "dist/index.cjs",
