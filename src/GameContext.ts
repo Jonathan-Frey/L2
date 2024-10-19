@@ -15,6 +15,7 @@ export class GameContext {
   #justPressedKeys: Set<string> = new Set();
   #pressedKeys: Set<string> = new Set();
   #gameEngine: GameEngine | null = null;
+  #ctx: CanvasRenderingContext2D | null = null;
   #activeCamera: Camera | null = null;
 
   private constructor() {}
@@ -45,12 +46,13 @@ export class GameContext {
     this.#addEventListeners();
   }
 
+  setCanvasContext(ctx: CanvasRenderingContext2D) {
+    this.#ctx = ctx;
+  }
+
   getCanvasSize() {
-    if (this.#gameEngine?.canvas) {
-      return new Vector2D(
-        this.#gameEngine.canvas.width,
-        this.#gameEngine.canvas.height
-      );
+    if (this.#ctx) {
+      return new Vector2D(this.#ctx.canvas.width, this.#ctx.canvas.height);
     } else {
       return null;
     }

@@ -40,8 +40,8 @@ export class GameEngine {
     // required properties are initialized by methods called in the constructor.
     this.#canvas = canvas;
     this.#ctx = this.#canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.#setScene(scene);
     this.#setupGameContext();
+    this.#setScene(scene);
 
     if (options?.debug) {
       this.#debug = options.debug;
