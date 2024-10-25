@@ -6,7 +6,8 @@ Made for the in 2024 as a part of the course 1dv610 at Linnaeus University.
 
 ## Table of Contents
 
-- Usage
+- [Contributing](#contributing)
+- [Usage](#usage)
   - [Setting up](#setting-up)
 - [Class Definition](#class-definition)
   - [GameEngine](#gameengine)
@@ -24,6 +25,10 @@ Made for the in 2024 as a part of the course 1dv610 at Linnaeus University.
   - [UiObject](#uiobject)
   - [Panel](#panel)
   - [BorderOptions](#borderoptions)
+
+## Contributing
+
+To contribute to this project, fork the repository and clone it to your local machine. Make sure to install the dependencies by running `npm install` in the root directory of the project.
 
 ## Usage
 
